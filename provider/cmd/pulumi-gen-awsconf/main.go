@@ -24,6 +24,7 @@ import (
 	"github.com/pkg/errors"
 	dotnetgen "github.com/pulumi/pulumi/pkg/v3/codegen/dotnet"
 	gogen "github.com/pulumi/pulumi/pkg/v3/codegen/go"
+	tsgen "github.com/pulumi/pulumi/pkg/v3/codegen/nodejs"
 	pygen "github.com/pulumi/pulumi/pkg/v3/codegen/python"
 	"github.com/pulumi/pulumi/pkg/v3/codegen/schema"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/util/contract"
@@ -37,10 +38,11 @@ const Tool = "pulumi-gen-awsconf"
 type Language string
 
 const (
-	DotNet Language = "dotnet"
-	Go     Language = "go"
-	Python Language = "python"
-	Schema Language = "schema"
+	DotNet     Language = "dotnet"
+	Go         Language = "go"
+	Python     Language = "python"
+	Schema     Language = "schema"
+	TypeScript Language = "typescript"
 )
 
 func main() {
@@ -76,6 +78,8 @@ func main() {
 	case Schema:
 		pkgSpec := generateSchema()
 		mustWritePulumiSchema(pkgSpec, outdir)
+	case TypeScript:
+		genTS(readSchema(schemaFile, version), outdir)
 	default:
 		panic(fmt.Sprintf("Unrecognized language %q", language))
 	}
@@ -143,6 +147,14 @@ func genGo(pkg *schema.Package, outdir string) {
 
 func genPython(pkg *schema.Package, outdir string) {
 	files, err := pygen.GeneratePackage(Tool, pkg, map[string][]byte{})
+	if err != nil {
+		panic(err)
+	}
+	mustWriteFiles(outdir, files)
+}
+
+func genTS(pkg *schema.Package, outdir string) {
+	files, err := tsgen.GeneratePackage(Tool, pkg, map[string][]byte{})
 	if err != nil {
 		panic(err)
 	}

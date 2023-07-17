@@ -18,3 +18,8 @@ gen.go::	gen.schema
 	rm -rf ./sdk/go
 	mkdir -p ./sdk/go
 	bin/pulumi-gen-awsconf go ./sdk/go schema/schema.json 0.0.1
+
+gen.ts::	gen.schema
+	rm -rf ./sdk/nodejs
+	mkdir -p ./sdk/nodejs
+	bin/pulumi-gen-awsconf typescript ./sdk/nodejs schema/schema.json 0.0.1
