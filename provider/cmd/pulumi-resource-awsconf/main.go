@@ -2,14 +2,12 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 
 	rprovider "github.com/pulumi/pulumi/pkg/v3/resource/provider"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/util/cmdutil"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/util/contract"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi/provider"
-
 	awsconf "github.com/t0yv0/pulumi-12709/provider"
 )
 
@@ -22,21 +20,22 @@ func main() {
 		Name:      awsconf.ProviderName,
 		Version:   version,
 		Schema:    providerSchema(),
-		Construct: construct,
+		Construct: constructFunc,
 	})
 	if err != nil {
 		cmdutil.ExitError(err.Error())
 	}
 }
 
-func construct(
+func constructFunc(
 	ctx *pulumi.Context,
-	typ,
-	name string,
+	typ, name string,
 	inputs provider.ConstructInputs,
-	options pulumi.ResourceOption,
-) (*provider.ConstructResult, error) {
-	return nil, fmt.Errorf("TODO: Construct")
+	options pulumi.ResourceOption) (*provider.ConstructResult, error) {
+	if 1+2 == 3 {
+		panic("Calling CONSTRUCT")
+	}
+	return nil, nil
 }
 
 func providerSchema() []byte {

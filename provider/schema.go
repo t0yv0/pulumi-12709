@@ -34,24 +34,6 @@ func PackageSpec() schema.PackageSpec {
 			},
 		},
 
-		Functions: map[string]schema.FunctionSpec{
-			"awsconf:index:ConfigureProvider": {
-				Inputs: &schema.ObjectTypeSpec{
-					Properties: map[string]schema.PropertySpec{
-						"region":  {TypeSpec: schema.TypeSpec{Type: "string"}},
-						"profile": {TypeSpec: schema.TypeSpec{Type: "string"}},
-					},
-				},
-				Outputs: &schema.ObjectTypeSpec{
-					Properties: map[string]schema.PropertySpec{
-						"awsProvider": {
-							TypeSpec: schema.TypeSpec{Ref: awsRef("#/provider")},
-						},
-					},
-				},
-			},
-		},
-
 		Language: map[string]schema.RawMessage{
 			"go": rawMessage(map[string]interface{}{
 				"generateResourceContainerTypes": true,

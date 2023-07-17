@@ -13,7 +13,6 @@
         "strict": true
     },
     "files": [
-        "configureProvider.ts",
         "configurer.ts",
         "index.ts",
         "provider.ts",

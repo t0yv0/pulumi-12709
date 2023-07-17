@@ -23,3 +23,7 @@ gen.ts::	gen.schema
 	rm -rf ./sdk/nodejs
 	mkdir -p ./sdk/nodejs
 	bin/pulumi-gen-awsconf typescript ./sdk/nodejs schema/schema.json 0.0.1
+
+tidy::
+	(cd provider && go mod tidy)
+	(cd sdk && go mod tidy)

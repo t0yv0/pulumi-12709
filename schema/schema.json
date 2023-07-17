@@ -26,26 +26,5 @@
             },
             "isComponent": true
         }
-    },
-    "functions": {
-        "awsconf:index:ConfigureProvider": {
-            "inputs": {
-                "properties": {
-                    "profile": {
-                        "type": "string"
-                    },
-                    "region": {
-                        "type": "string"
-                    }
-                }
-            },
-            "outputs": {
-                "properties": {
-                    "awsProvider": {
-                        "$ref": "/aws/v5.31.0/schema.json#/provider"
-                    }
-                }
-            }
-        }
     }
 }

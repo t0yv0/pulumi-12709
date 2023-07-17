@@ -1,5 +1,6 @@
 name: pu-12709-yaml
 runtime: yaml
+
 resources:
   configurer:
     type: awsconf:index:Configurer
