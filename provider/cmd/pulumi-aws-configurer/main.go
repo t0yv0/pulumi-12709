@@ -15,6 +15,7 @@ import (
 const (
 	providerName = "aws-configurer"
 	version      = "0.0.1"
+	awsVersion   = "5.31.0"
 )
 
 func main() {
@@ -47,5 +48,27 @@ func providerSchema() []byte {
 }
 
 func packageSpec() schema.PackageSpec {
-	return schema.PackageSpec{}
+	return schema.PackageSpec{
+		Name: providerName,
+		Resources: map[string]schema.ResourceSpec{
+			"cfg:index:Configurer": {
+				IsComponent: true,
+				InputProperties: map[string]schema.PropertySpec{
+					"region":  {TypeSpec: schema.TypeSpec{Type: "string"}},
+					"profile": {TypeSpec: schema.TypeSpec{Type: "string"}},
+				},
+				ObjectTypeSpec: schema.ObjectTypeSpec{
+					Properties: map[string]schema.PropertySpec{
+						"awsProvider": {
+							TypeSpec: schema.TypeSpec{Ref: awsRef("#/provider")},
+						},
+					},
+				},
+			},
+		},
+	}
+}
+
+func awsRef(ref string) string {
+	return fmt.Sprintf("/aws/v%s/schema.json%s", awsVersion, ref)
 }
