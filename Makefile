@@ -15,6 +15,6 @@ gen.schema::	bin/pulumi-gen-awsconf
 	bin/pulumi-gen-awsconf schema ./schema
 
 gen.go::	gen.schema
-	rm -rf ./sdk/go/awsconf
-	mkdir -p ./sdk/go/awsconf
-	bin/pulumi-gen-awsconf go ./sdk/go/awsconf schema/schema.json 0.0.1
+	rm -rf ./sdk/go
+	mkdir -p ./sdk/go
+	bin/pulumi-gen-awsconf go ./sdk/go schema/schema.json 0.0.1
