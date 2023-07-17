@@ -28,7 +28,7 @@ import (
 	"github.com/pulumi/pulumi/pkg/v3/codegen/schema"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/util/contract"
 
-	awsconf "example.pulumi.com/aws-configurer"
+	awsconf "github.com/t0yv0/pulumi-12709/provider"
 )
 
 const Tool = "pulumi-gen-awsconf"

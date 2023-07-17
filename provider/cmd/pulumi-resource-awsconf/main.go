@@ -10,7 +10,7 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi/provider"
 
-	awsconf "example.pulumi.com/aws-configurer"
+	awsconf "github.com/t0yv0/pulumi-12709/provider"
 )
 
 const (

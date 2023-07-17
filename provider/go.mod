@@ -1,4 +1,4 @@
-module example.pulumi.com/aws-configurer
+module github.com/t0yv0/pulumi-12709/provider
 
 go 1.20
 
