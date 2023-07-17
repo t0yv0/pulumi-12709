@@ -16,6 +16,7 @@ const (
 func PackageSpec() schema.PackageSpec {
 	return schema.PackageSpec{
 		Name: ProviderName,
+
 		Resources: map[string]schema.ResourceSpec{
 			"awsconf:index:Configurer": {
 				IsComponent: true,
@@ -24,6 +25,24 @@ func PackageSpec() schema.PackageSpec {
 					"profile": {TypeSpec: schema.TypeSpec{Type: "string"}},
 				},
 				ObjectTypeSpec: schema.ObjectTypeSpec{
+					Properties: map[string]schema.PropertySpec{
+						"awsProvider": {
+							TypeSpec: schema.TypeSpec{Ref: awsRef("#/provider")},
+						},
+					},
+				},
+			},
+		},
+
+		Functions: map[string]schema.FunctionSpec{
+			"awsconf:index:ConfigureProvider": {
+				Inputs: &schema.ObjectTypeSpec{
+					Properties: map[string]schema.PropertySpec{
+						"region":  {TypeSpec: schema.TypeSpec{Type: "string"}},
+						"profile": {TypeSpec: schema.TypeSpec{Type: "string"}},
+					},
+				},
+				Outputs: &schema.ObjectTypeSpec{
 					Properties: map[string]schema.PropertySpec{
 						"awsProvider": {
 							TypeSpec: schema.TypeSpec{Ref: awsRef("#/provider")},
