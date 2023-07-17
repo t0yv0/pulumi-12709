@@ -4,23 +4,22 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/pulumi/pulumi/pkg/v3/codegen/schema"
 	rprovider "github.com/pulumi/pulumi/pkg/v3/resource/provider"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/util/cmdutil"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/util/contract"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi/provider"
+
+	awsconf "example.pulumi.com/aws-configurer"
 )
 
 const (
-	providerName = "awsconf"
-	version      = "0.0.1"
-	awsVersion   = "5.31.0"
+	version = "0.0.1"
 )
 
 func main() {
 	err := rprovider.MainWithOptions(rprovider.Options{
-		Name:      providerName,
+		Name:      awsconf.ProviderName,
 		Version:   version,
 		Schema:    providerSchema(),
 		Construct: construct,
@@ -41,34 +40,8 @@ func construct(
 }
 
 func providerSchema() []byte {
-	p := packageSpec()
+	p := awsconf.PackageSpec()
 	bytes, err := json.Marshal(p)
 	contract.AssertNoError(err)
 	return bytes
-}
-
-func packageSpec() schema.PackageSpec {
-	return schema.PackageSpec{
-		Name: providerName,
-		Resources: map[string]schema.ResourceSpec{
-			"awsconf:index:Configurer": {
-				IsComponent: true,
-				InputProperties: map[string]schema.PropertySpec{
-					"region":  {TypeSpec: schema.TypeSpec{Type: "string"}},
-					"profile": {TypeSpec: schema.TypeSpec{Type: "string"}},
-				},
-				ObjectTypeSpec: schema.ObjectTypeSpec{
-					Properties: map[string]schema.PropertySpec{
-						"awsProvider": {
-							TypeSpec: schema.TypeSpec{Ref: awsRef("#/provider")},
-						},
-					},
-				},
-			},
-		},
-	}
-}
-
-func awsRef(ref string) string {
-	return fmt.Sprintf("/aws/v%s/schema.json%s", awsVersion, ref)
 }
