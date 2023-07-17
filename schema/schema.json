@@ -1,5 +1,12 @@
 {
     "name": "awsconf",
+    "language": {
+        "go": {
+            "generateResourceContainerTypes": true,
+            "importBasePath": "github.com/t0yv0/pulumi-12709/sdk/go/awsconf",
+            "liftSingleValueMethodReturns": true
+        }
+    },
     "config": {},
     "provider": {},
     "resources": {

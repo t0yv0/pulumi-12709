@@ -8,7 +8,7 @@ import (
 	"reflect"
 
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-	"internal"
+	"github.com/t0yv0/pulumi-12709/sdk/go/awsconf/internal"
 )
 
 type Provider struct {

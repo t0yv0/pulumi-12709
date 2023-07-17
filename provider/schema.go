@@ -1,9 +1,11 @@
 package provider
 
 import (
+	"encoding/json"
 	"fmt"
 
 	"github.com/pulumi/pulumi/pkg/v3/codegen/schema"
+	"github.com/pulumi/pulumi/sdk/v3/go/common/util/contract"
 )
 
 const (
@@ -30,9 +32,23 @@ func PackageSpec() schema.PackageSpec {
 				},
 			},
 		},
+
+		Language: map[string]schema.RawMessage{
+			"go": rawMessage(map[string]interface{}{
+				"generateResourceContainerTypes": true,
+				"importBasePath":                 "github.com/t0yv0/pulumi-12709/sdk/go/awsconf",
+				"liftSingleValueMethodReturns":   true,
+			}),
+		},
 	}
 }
 
 func awsRef(ref string) string {
 	return fmt.Sprintf("/aws/v%s/schema.json%s", awsVersion, ref)
+}
+
+func rawMessage(v interface{}) schema.RawMessage {
+	bytes, err := json.Marshal(v)
+	contract.Assert(err == nil)
+	return bytes
 }
