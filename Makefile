@@ -9,6 +9,9 @@ bin/pulumi-gen-awsconf::
 preview.yaml::	bin/pulumi-resource-awsconf
 	(cd examples/yaml-example && bash preview.sh)
 
+preview.go::	bin/pulumi-resource-awsconf
+	(cd examples/go-example && bash preview.sh)
+
 gen.schema::	bin/pulumi-gen-awsconf
 	rm -rf ./schema
 	mkdir -p ./schema
