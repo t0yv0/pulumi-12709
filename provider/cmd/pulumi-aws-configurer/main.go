@@ -13,7 +13,7 @@ import (
 )
 
 const (
-	providerName = "aws-configurer"
+	providerName = "awsconf"
 	version      = "0.0.1"
 	awsVersion   = "5.31.0"
 )
@@ -51,7 +51,7 @@ func packageSpec() schema.PackageSpec {
 	return schema.PackageSpec{
 		Name: providerName,
 		Resources: map[string]schema.ResourceSpec{
-			"cfg:index:Configurer": {
+			"awsconf:index:Configurer": {
 				IsComponent: true,
 				InputProperties: map[string]schema.PropertySpec{
 					"region":  {TypeSpec: schema.TypeSpec{Type: "string"}},
