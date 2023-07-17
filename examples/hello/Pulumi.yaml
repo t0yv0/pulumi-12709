@@ -1,0 +1,16 @@
+name: pu-12709-yaml
+runtime: yaml
+resources:
+  configurer:
+    type: awsconf:index:Configurer
+    properties:
+      region: us-west-2
+      profile: devprofile
+  bucket1:
+    type: aws:s3:Bucket
+    properties:
+      acl: private
+    options:
+      provider: ${configurer.awsProvider}
+outputs:
+  bucketID: ${bucket1.id}
