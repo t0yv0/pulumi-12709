@@ -8,4 +8,7 @@ export PATH=$PWD/../../bin:$PATH
 export PULUMI_CONFIG_PASSPHRASE=1234567
 
 pulumi destroy --yes
-pulumi up --yes
+
+rm -rf "$PWD/log.json"
+PULUMI_DEBUG_GRPC="$PWD/log.json" pulumi up --yes
+jq . "$PWD/log.json" > "$PWD/log-formatted.json"

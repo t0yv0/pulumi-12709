@@ -25,7 +25,7 @@ func main() {
 		configurer.AwsProvider.ApplyT(func(p *aws.Provider) (int, error) {
 
 			// Create an AWS resource (S3 Bucket)
-			bucket, err := s3.NewBucket(ctx, "my-bucket-12709", nil)
+			bucket, err := s3.NewBucket(ctx, "my-bucket-12709", nil, pulumi.Provider(p))
 			if err != nil {
 				return 0, err
 			}
