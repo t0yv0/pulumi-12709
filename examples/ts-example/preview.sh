@@ -9,5 +9,9 @@ export PULUMI_CONFIG_PASSPHRASE=1234567
 
 yarn install
 yarn link @pulumi/awsconf
+yarn link @pulumi/pulumi
 
-pulumi preview
+rm -rf "$PWD/log.json"
+rm -rf "$PWD/log-formatted.json"
+PULUMI_DEBUG_GRPC="$PWD/log.json" pulumi preview || echo ignoreFAIL
+jq . "$PWD/log.json" > "$PWD/log-formatted.json"

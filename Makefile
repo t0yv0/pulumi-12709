@@ -37,6 +37,7 @@ build.ts::	gen.ts
 	cd sdk/nodejs/ && \
 		printf "module fake_nodejs_module // Exclude this directory from Go tools\n\ngo 1.17\n" > go.mod && \
 		yarn install && \
+		yarn link @pulumi/pulumi && \
 		yarn run tsc && \
 		mkdir -p bin && \
 		cp package.json yarn.lock ./bin/ && \

@@ -6,14 +6,19 @@ let config = new pulumi.Config();
 let region = config.require("region");
 let profile = config.require("profile");
 
+// This dummy is needed to register AWS provider with the Node SDK. Otherwise awsProviderType becomes string, that is
+// provider hydrates as a plain URN which is bad.
+let dummyBucket = new aws.s3.Bucket("my-control-bucket-12709-ts", {}, {});
+
 let configurer = new awsconf.Configurer("configurer", {
     profile: profile,
     region: region,
 })
 
-configurer.awsProvider.apply(p => {
-    let foobar: aws.Provider = p;
-    console.log("got provider P", p);
-    const bucket = new aws.s3.Bucket("my-bucket-12709-ts", {}, {provider: p});
-    console.log("created bucket");
+export const awsProviderType = configurer.awsProvider.apply(p => typeof(p));
+
+let awsProvider = pulumi.referenceProviderResource("aws", configurer.awsProvider);
+
+const bucket = new aws.s3.Bucket("my-bucket-12709-ts", {}, {
+    provider: awsProvider,
 });
