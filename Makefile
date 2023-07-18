@@ -30,6 +30,19 @@ gen.ts::	gen.schema
 	mkdir -p ./sdk/nodejs
 	bin/pulumi-gen-awsconf typescript ./sdk/nodejs schema/schema.json 0.0.1
 
+build.ts::	gen.ts
+	cd sdk/nodejs/ && \
+		printf "module fake_nodejs_module // Exclude this directory from Go tools\n\ngo 1.17\n" > go.mod && \
+		yarn install && \
+		yarn run tsc && \
+		mkdir -p bin && \
+		cp package.json yarn.lock ./bin/ && \
+		sed -i.bak -e "s/\$${VERSION}/$(VERSION)/g" ./bin/package.json
+
+install.ts::	build.ts
+	(cd ./sdk/nodejs/bin && yarn unlink || echo "unlink not needed")
+	yarn link --cwd ./sdk/nodejs/bin
+
 tidy::
 	(cd provider && go mod tidy)
 	(cd sdk && go mod tidy)

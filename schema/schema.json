@@ -5,6 +5,11 @@
             "generateResourceContainerTypes": true,
             "importBasePath": "github.com/t0yv0/pulumi-12709/sdk/go/awsconf",
             "liftSingleValueMethodReturns": true
+        },
+        "nodejs": {
+            "dependencies": {
+                "@pulumi/aws": "5.31.0"
+            }
         }
     },
     "config": {},

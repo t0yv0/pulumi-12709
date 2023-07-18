@@ -40,6 +40,11 @@ func PackageSpec() schema.PackageSpec {
 				"importBasePath":                 "github.com/t0yv0/pulumi-12709/sdk/go/awsconf",
 				"liftSingleValueMethodReturns":   true,
 			}),
+			"nodejs": rawMessage(map[string]interface{}{
+				"dependencies": map[string]interface{}{
+					"@pulumi/aws": awsVersion,
+				},
+			}),
 		},
 	}
 }
