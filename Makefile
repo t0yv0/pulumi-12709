@@ -15,6 +15,9 @@ preview.go::	bin/pulumi-resource-awsconf
 preview.ts::	bin/pulumi-resource-awsconf
 	(cd examples/ts-example && bash preview.sh)
 
+up.ts::	bin/pulumi-resource-awsconf
+	(cd examples/ts-example && bash up.sh)
+
 up.go::	bin/pulumi-resource-awsconf
 	(cd examples/go-example && bash up.sh)
 
