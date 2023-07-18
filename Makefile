@@ -30,3 +30,4 @@ gen.ts::	gen.schema
 tidy::
 	(cd provider && go mod tidy)
 	(cd sdk && go mod tidy)
+	(cd examples/go-example && go mod tidy)
