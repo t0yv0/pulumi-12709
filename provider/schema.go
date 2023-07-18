@@ -18,7 +18,7 @@ func PackageSpec() schema.PackageSpec {
 		Name: ProviderName,
 
 		Resources: map[string]schema.ResourceSpec{
-			"awsconf:index:Configurer": {
+			ConfigurerToken: {
 				IsComponent: true,
 				InputProperties: map[string]schema.PropertySpec{
 					"region":  {TypeSpec: schema.TypeSpec{Type: "string"}},

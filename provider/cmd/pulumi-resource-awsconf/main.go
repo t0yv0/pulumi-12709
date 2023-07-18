@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 
 	rprovider "github.com/pulumi/pulumi/pkg/v3/resource/provider"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/util/cmdutil"
@@ -31,11 +32,14 @@ func constructFunc(
 	ctx *pulumi.Context,
 	typ, name string,
 	inputs provider.ConstructInputs,
-	options pulumi.ResourceOption) (*provider.ConstructResult, error) {
-	if 1+2 == 3 {
-		panic("Calling CONSTRUCT")
+	options pulumi.ResourceOption,
+) (*provider.ConstructResult, error) {
+	switch {
+	case typ == awsconf.ConfigurerToken:
+		return awsconf.ConstructConfigurer(ctx, name, inputs, options)
+	default:
+		return nil, fmt.Errorf("Cannot Construct a remote component resource: unknown type token %q", typ)
 	}
-	return nil, nil
 }
 
 func providerSchema() []byte {
