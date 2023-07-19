@@ -1,5 +1,6 @@
 package provider
 
 const (
-	ConfigurerToken = "awsconf:index:Configurer"
+	ConfigurerToken                   = "awsconf:index:Configurer"
+	ConfigurerConfigureAwsMethodToken = "awsconf:index:Configurer/awsMethod"
 )

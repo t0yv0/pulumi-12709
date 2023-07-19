@@ -11,6 +11,7 @@ import (
 const (
 	ProviderName = "awsconf"
 	awsVersion   = "5.31.0"
+	self         = "__self__"
 )
 
 func PackageSpec() schema.PackageSpec {
@@ -31,6 +32,35 @@ func PackageSpec() schema.PackageSpec {
 						},
 					},
 				},
+
+				Methods: map[string]string{
+					"configureAwsProvider": ConfigurerConfigureAwsMethodToken,
+				},
+			},
+		},
+
+		Functions: map[string]schema.FunctionSpec{
+			ConfigurerConfigureAwsMethodToken: {
+				Inputs: &schema.ObjectTypeSpec{
+					Properties: map[string]schema.PropertySpec{
+						self: {
+							TypeSpec: schema.TypeSpec{
+								Ref: localResourceRef(ConfigurerToken),
+							},
+						},
+					},
+					Required: []string{self},
+				},
+				ReturnType: &schema.ReturnTypeSpec{
+					ObjectTypeSpec: &schema.ObjectTypeSpec{
+						Properties: map[string]schema.PropertySpec{
+							"awsProvider": {
+								TypeSpec: schema.TypeSpec{Ref: awsRef("#/provider")},
+							},
+						},
+						Required: []string{"awsProvider"},
+					},
+				},
 			},
 		},
 
@@ -47,6 +77,10 @@ func PackageSpec() schema.PackageSpec {
 			}),
 		},
 	}
+}
+
+func localResourceRef(token string) string {
+	return fmt.Sprintf("#/resources/%s", token)
 }
 
 func awsRef(ref string) string {

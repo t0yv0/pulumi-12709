@@ -43,6 +43,12 @@ export class Configurer extends pulumi.ComponentResource {
         opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts);
         super(Configurer.__pulumiType, name, resourceInputs, opts, true /*remote*/);
     }
+
+    configureAwsProvider(): pulumi.Output<Configurer.ConfigureAwsProviderResult> {
+        return pulumi.runtime.call("awsconf:index:Configurer/awsMethod", {
+            "__self__": this,
+        }, this);
+    }
 }
 
 /**
@@ -51,4 +57,14 @@ export class Configurer extends pulumi.ComponentResource {
 export interface ConfigurerArgs {
     profile?: pulumi.Input<string>;
     region?: pulumi.Input<string>;
+}
+
+export namespace Configurer {
+    /**
+     * The results of the Configurer.configureAwsProvider method.
+     */
+    export interface ConfigureAwsProviderResult {
+        readonly awsProvider: pulumiAws.Provider;
+    }
+
 }

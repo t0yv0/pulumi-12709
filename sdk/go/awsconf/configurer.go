@@ -49,6 +49,28 @@ func (ConfigurerArgs) ElementType() reflect.Type {
 	return reflect.TypeOf((*configurerArgs)(nil)).Elem()
 }
 
+func (r *Configurer) ConfigureAwsProvider(ctx *pulumi.Context) (aws.ProviderOutput, error) {
+	out, err := ctx.Call("awsconf:index:Configurer/awsMethod", nil, configurerConfigureAwsProviderResultOutput{}, r)
+	if err != nil {
+		return aws.ProviderOutput{}, err
+	}
+	return out.(configurerConfigureAwsProviderResultOutput).AwsProvider(), nil
+}
+
+type configurerConfigureAwsProviderResult struct {
+	AwsProvider *aws.Provider `pulumi:"awsProvider"`
+}
+
+type configurerConfigureAwsProviderResultOutput struct{ *pulumi.OutputState }
+
+func (configurerConfigureAwsProviderResultOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*configurerConfigureAwsProviderResult)(nil)).Elem()
+}
+
+func (o configurerConfigureAwsProviderResultOutput) AwsProvider() aws.ProviderOutput {
+	return o.ApplyT(func(v configurerConfigureAwsProviderResult) *aws.Provider { return v.AwsProvider }).(aws.ProviderOutput)
+}
+
 type ConfigurerInput interface {
 	pulumi.Input
 
@@ -181,6 +203,7 @@ func init() {
 	pulumi.RegisterInputType(reflect.TypeOf((*ConfigurerArrayInput)(nil)).Elem(), ConfigurerArray{})
 	pulumi.RegisterInputType(reflect.TypeOf((*ConfigurerMapInput)(nil)).Elem(), ConfigurerMap{})
 	pulumi.RegisterOutputType(ConfigurerOutput{})
+	pulumi.RegisterOutputType(configurerConfigureAwsProviderResultOutput{})
 	pulumi.RegisterOutputType(ConfigurerArrayOutput{})
 	pulumi.RegisterOutputType(ConfigurerMapOutput{})
 }

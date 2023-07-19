@@ -29,7 +29,34 @@
                     "type": "string"
                 }
             },
-            "isComponent": true
+            "isComponent": true,
+            "methods": {
+                "configureAwsProvider": "awsconf:index:Configurer/awsMethod"
+            }
+        }
+    },
+    "functions": {
+        "awsconf:index:Configurer/awsMethod": {
+            "inputs": {
+                "properties": {
+                    "__self__": {
+                        "$ref": "#/resources/awsconf:index:Configurer"
+                    }
+                },
+                "required": [
+                    "__self__"
+                ]
+            },
+            "outputs": {
+                "properties": {
+                    "awsProvider": {
+                        "$ref": "/aws/v5.31.0/schema.json#/provider"
+                    }
+                },
+                "required": [
+                    "awsProvider"
+                ]
+            }
         }
     }
 }

@@ -5,10 +5,8 @@ import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "./utilities";
 
 // Export members:
-export { ConfigurerArgs } from "./configurer";
-export type Configurer = import("./configurer").Configurer;
-export const Configurer: typeof import("./configurer").Configurer = null as any;
-utilities.lazyLoad(exports, ["Configurer"], () => require("./configurer"));
+export * from "./configurer";
+import { Configurer } from "./configurer";
 
 export { ProviderArgs } from "./provider";
 export type Provider = import("./provider").Provider;
