@@ -11,7 +11,10 @@ yarn install
 yarn link @pulumi/awsconf
 yarn link @pulumi/pulumi
 
+rm -rf "$PWD/stack.json"
 rm -rf "$PWD/log.json"
 rm -rf "$PWD/log-formatted.json"
-PULUMI_DEBUG_GRPC="$PWD/log.json" pulumi up --yes || echo ignoreFAIL
+PULUMI_DEBUG_GRPC="$PWD/log.json" pulumi up --skip-preview --yes || echo ignoreFAIL
 jq . "$PWD/log.json" > "$PWD/log-formatted.json"
+
+pulumi stack export > "$PWD/stack.json"

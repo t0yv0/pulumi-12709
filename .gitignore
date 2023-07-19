@@ -3,3 +3,4 @@ bin
 log*.json
 yarn.lock
 node_modules
+stack.json

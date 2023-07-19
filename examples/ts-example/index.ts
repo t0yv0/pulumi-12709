@@ -20,6 +20,12 @@ const bucket = new aws.s3.Bucket("my-bucket-12709-ts", {}, {
     provider: providers.awsProvider,
 });
 
-export const awsProviderType = typeof(providers.awsProvider);
+export const awsProvider = {
+    typ: typeof(providers.awsProvider),
+    urn: providers.awsProvider.urn,
+    isOutput: pulumi.Output.isInstance(providers.awsProvider)
+};
+
 export const bucketID = bucket.id;
 export const someString = providers.someString;
+export const someStringType = typeof(providers.someString);
