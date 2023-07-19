@@ -14,6 +14,10 @@ const (
 	self         = "__self__"
 )
 
+var (
+	stringTS = schema.TypeSpec{Type: "string"}
+)
+
 func PackageSpec() schema.PackageSpec {
 	return schema.PackageSpec{
 		Name: ProviderName,
@@ -36,8 +40,9 @@ func PackageSpec() schema.PackageSpec {
 								Ref: localResourceRef(ConfigurerToken),
 							},
 						},
-						"region":  {TypeSpec: schema.TypeSpec{Type: "string"}},
-						"profile": {TypeSpec: schema.TypeSpec{Type: "string"}},
+						"region":  {TypeSpec: stringTS},
+						"profile": {TypeSpec: stringTS},
+						"mode":    {TypeSpec: stringTS},
 					},
 					Required: []string{self, "region", "profile"},
 				},
@@ -46,6 +51,9 @@ func PackageSpec() schema.PackageSpec {
 						Properties: map[string]schema.PropertySpec{
 							"awsProvider": {
 								TypeSpec: schema.TypeSpec{Ref: awsRef("#/provider")},
+							},
+							"someString": {
+								TypeSpec: stringTS,
 							},
 						},
 						Required: []string{"awsProvider"},

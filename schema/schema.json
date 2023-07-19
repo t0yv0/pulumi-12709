@@ -29,6 +29,9 @@
                     "__self__": {
                         "$ref": "#/resources/awsconf:index:Configurer"
                     },
+                    "mode": {
+                        "type": "string"
+                    },
                     "profile": {
                         "type": "string"
                     },
@@ -46,6 +49,9 @@
                 "properties": {
                     "awsProvider": {
                         "$ref": "/aws/v5.31.0/schema.json#/provider"
+                    },
+                    "someString": {
+                        "type": "string"
                     }
                 },
                 "required": [

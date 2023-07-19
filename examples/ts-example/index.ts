@@ -10,19 +10,16 @@ let profile = config.require("profile");
 // provider hydrates as a plain URN which is bad.
 let dummyBucket = new aws.s3.Bucket("my-control-bucket-12709-ts", {}, {});
 
-let configurer = new awsconf.Configurer("configurer", {})
-
-let configuredAwsProvider = configurer.configureAwsProvider({
+let providers = await new awsconf.Configurer("configurer", {}).configureAwsProviderAsync({
     profile: profile,
     region: region,
-}).apply(p => p.awsProvider);
-
-let awsProvider = pulumi.referenceProviderResource("aws", configuredAwsProvider);
-
-export const awsProviderType = configuredAwsProvider.apply(pr => typeof(pr));
-
-const bucket = new aws.s3.Bucket("my-bucket-12709-ts", {}, {
-    provider: awsProvider,
+    mode: "normal",
 });
 
+const bucket = new aws.s3.Bucket("my-bucket-12709-ts", {}, {
+    provider: providers.awsProvider,
+});
+
+export const awsProviderType = typeof(providers.awsProvider);
 export const bucketID = bucket.id;
+export const someString = providers.someString;

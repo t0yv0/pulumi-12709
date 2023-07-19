@@ -1,6 +1,7 @@
 package provider
 
 import (
+	//"fmt"
 	"github.com/pulumi/pulumi-aws/sdk/v5/go/aws"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi/provider"
@@ -52,12 +53,14 @@ func ConstructConfigurer(
 }
 
 type ConfigureAwsMethodArgs struct {
-	Region  pulumi.StringInput `pulumi:"region"`
-	Profile pulumi.StringInput `pulumi:"profile"`
+	Region  pulumi.StringInput    `pulumi:"region"`
+	Profile pulumi.StringInput    `pulumi:"profile"`
+	Mode    pulumi.StringPtrInput `pulumi:"mode"`
 }
 
 type ConfigureAwsMethodResult struct {
-	AwsProvider *aws.Provider `pulumi:"awsProvider"`
+	AwsProvider *aws.Provider       `pulumi:"awsProvider"`
+	SomeString  pulumi.StringOutput `pulumi:"someString"`
 }
 
 func CallConfigureAwsMethod(ctx *pulumi.Context, inputs provider.CallArgs) (*provider.CallResult, error) {
@@ -77,7 +80,19 @@ func CallConfigureAwsMethod(ctx *pulumi.Context, inputs provider.CallArgs) (*pro
 		return nil, err
 	}
 
+	// The following code resolves to Unknown.
+	//
+	// someString := awsProv.HttpProxy.ToStringPtrOutput().ApplyT(func(x *string) string {
+	// 	if x != nil {
+	// 		return fmt.Sprintf("OK: mode was %q", *x)
+	// 	}
+	// 	return "OK: mode was nil"
+	// }).(pulumi.StringOutput)
+
+	someString := pulumi.String("OK").ToStringOutput()
+
 	return provider.NewCallResult(&ConfigureAwsMethodResult{
 		AwsProvider: awsProv,
+		SomeString:  someString,
 	})
 }
