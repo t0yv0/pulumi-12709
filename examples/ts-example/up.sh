@@ -7,9 +7,13 @@ export HC_SKIP_VPN_CHECK=true
 export PATH=$PWD/../../bin:$PATH
 export PULUMI_CONFIG_PASSPHRASE=1234567
 
+
 yarn install
 yarn link @pulumi/awsconf
 yarn link @pulumi/pulumi
+
+pulumi destroy --yes
+
 
 rm -rf "$PWD/stack.json"
 rm -rf "$PWD/log.json"

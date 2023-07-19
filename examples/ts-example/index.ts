@@ -8,7 +8,9 @@ let profile = config.require("profile");
 
 // This dummy is needed to register AWS provider with the Node SDK. Otherwise awsProviderType becomes string, that is
 // provider hydrates as a plain URN which is bad.
-let dummyBucket = new aws.s3.Bucket("my-control-bucket-12709-ts", {}, {});
+// let dummyBucket = new aws.s3.Bucket("my-control-bucket-12709-ts", {}, {});
+//
+// Looks like this is not a problem if any aws.s3.Bucket is referenced, before or after the provider configurer.
 
 let providers = await new awsconf.Configurer("configurer", {}).configureAwsProviderAsync({
     profile: profile,
