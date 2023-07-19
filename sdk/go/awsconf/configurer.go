@@ -14,8 +14,6 @@ import (
 
 type Configurer struct {
 	pulumi.ResourceState
-
-	AwsProvider aws.ProviderOutput `pulumi:"awsProvider"`
 }
 
 // NewConfigurer registers a new resource with the given unique name, arguments, and options.
@@ -35,26 +33,37 @@ func NewConfigurer(ctx *pulumi.Context,
 }
 
 type configurerArgs struct {
-	Profile *string `pulumi:"profile"`
-	Region  *string `pulumi:"region"`
 }
 
 // The set of arguments for constructing a Configurer resource.
 type ConfigurerArgs struct {
-	Profile pulumi.StringPtrInput
-	Region  pulumi.StringPtrInput
 }
 
 func (ConfigurerArgs) ElementType() reflect.Type {
 	return reflect.TypeOf((*configurerArgs)(nil)).Elem()
 }
 
-func (r *Configurer) ConfigureAwsProvider(ctx *pulumi.Context) (aws.ProviderOutput, error) {
-	out, err := ctx.Call("awsconf:index:Configurer/awsMethod", nil, configurerConfigureAwsProviderResultOutput{}, r)
+func (r *Configurer) ConfigureAwsProvider(ctx *pulumi.Context, args *ConfigurerConfigureAwsProviderArgs) (aws.ProviderOutput, error) {
+	out, err := ctx.Call("awsconf:index:Configurer/awsMethod", args, configurerConfigureAwsProviderResultOutput{}, r)
 	if err != nil {
 		return aws.ProviderOutput{}, err
 	}
 	return out.(configurerConfigureAwsProviderResultOutput).AwsProvider(), nil
+}
+
+type configurerConfigureAwsProviderArgs struct {
+	Profile string `pulumi:"profile"`
+	Region  string `pulumi:"region"`
+}
+
+// The set of arguments for the ConfigureAwsProvider method of the Configurer resource.
+type ConfigurerConfigureAwsProviderArgs struct {
+	Profile pulumi.StringInput
+	Region  pulumi.StringInput
+}
+
+func (ConfigurerConfigureAwsProviderArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*configurerConfigureAwsProviderArgs)(nil)).Elem()
 }
 
 type configurerConfigureAwsProviderResult struct {
@@ -152,10 +161,6 @@ func (o ConfigurerOutput) ToConfigurerOutput() ConfigurerOutput {
 
 func (o ConfigurerOutput) ToConfigurerOutputWithContext(ctx context.Context) ConfigurerOutput {
 	return o
-}
-
-func (o ConfigurerOutput) AwsProvider() aws.ProviderOutput {
-	return o.ApplyT(func(v *Configurer) aws.ProviderOutput { return v.AwsProvider }).(aws.ProviderOutput)
 }
 
 type ConfigurerArrayOutput struct{ *pulumi.OutputState }

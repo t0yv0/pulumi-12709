@@ -16,19 +16,6 @@
     "provider": {},
     "resources": {
         "awsconf:index:Configurer": {
-            "properties": {
-                "awsProvider": {
-                    "$ref": "/aws/v5.31.0/schema.json#/provider"
-                }
-            },
-            "inputProperties": {
-                "profile": {
-                    "type": "string"
-                },
-                "region": {
-                    "type": "string"
-                }
-            },
             "isComponent": true,
             "methods": {
                 "configureAwsProvider": "awsconf:index:Configurer/awsMethod"
@@ -41,10 +28,18 @@
                 "properties": {
                     "__self__": {
                         "$ref": "#/resources/awsconf:index:Configurer"
+                    },
+                    "profile": {
+                        "type": "string"
+                    },
+                    "region": {
+                        "type": "string"
                     }
                 },
                 "required": [
-                    "__self__"
+                    "__self__",
+                    "region",
+                    "profile"
                 ]
             },
             "outputs": {

@@ -14,15 +14,20 @@ func main() {
 		profile := conf.Require("profile")
 		region := conf.Require("region")
 
-		configurer, err := awsconf.NewConfigurer(ctx, "configurer", &awsconf.ConfigurerArgs{
-			Profile: pulumi.String(profile),
+		configurer, err := awsconf.NewConfigurer(ctx, "configurer", &awsconf.ConfigurerArgs{})
+		if err != nil {
+			return err
+		}
+
+		awsProv, err := configurer.ConfigureAwsProvider(ctx, &awsconf.ConfigurerConfigureAwsProviderArgs{
 			Region:  pulumi.String(region),
+			Profile: pulumi.String(profile),
 		})
 		if err != nil {
 			return err
 		}
 
-		configurer.AwsProvider.ApplyT(func(p *aws.Provider) (int, error) {
+		awsProv.ApplyT(func(p *aws.Provider) (int, error) {
 
 			// Create an AWS resource (S3 Bucket)
 			bucket, err := s3.NewBucket(ctx, "my-bucket-12709", nil, pulumi.Provider(p))

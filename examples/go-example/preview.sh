@@ -7,4 +7,5 @@ export HC_SKIP_VPN_CHECK=true
 export PATH=$PWD/../../bin:$PATH
 export PULUMI_CONFIG_PASSPHRASE=1234567
 
+pulumi destroy --yes
 pulumi preview

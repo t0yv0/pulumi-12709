@@ -21,7 +21,6 @@ export class Configurer extends pulumi.ComponentResource {
         return obj['__pulumiType'] === Configurer.__pulumiType;
     }
 
-    public /*out*/ readonly awsProvider!: pulumi.Output<pulumiAws.Provider | undefined>;
 
     /**
      * Create a Configurer resource with the given unique name, arguments, and options.
@@ -34,19 +33,17 @@ export class Configurer extends pulumi.ComponentResource {
         let resourceInputs: pulumi.Inputs = {};
         opts = opts || {};
         if (!opts.id) {
-            resourceInputs["profile"] = args ? args.profile : undefined;
-            resourceInputs["region"] = args ? args.region : undefined;
-            resourceInputs["awsProvider"] = undefined /*out*/;
         } else {
-            resourceInputs["awsProvider"] = undefined /*out*/;
         }
         opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts);
         super(Configurer.__pulumiType, name, resourceInputs, opts, true /*remote*/);
     }
 
-    configureAwsProvider(): pulumi.Output<Configurer.ConfigureAwsProviderResult> {
+    configureAwsProvider(args: Configurer.ConfigureAwsProviderArgs): pulumi.Output<Configurer.ConfigureAwsProviderResult> {
         return pulumi.runtime.call("awsconf:index:Configurer/awsMethod", {
             "__self__": this,
+            "profile": args.profile,
+            "region": args.region,
         }, this);
     }
 }
@@ -55,11 +52,17 @@ export class Configurer extends pulumi.ComponentResource {
  * The set of arguments for constructing a Configurer resource.
  */
 export interface ConfigurerArgs {
-    profile?: pulumi.Input<string>;
-    region?: pulumi.Input<string>;
 }
 
 export namespace Configurer {
+    /**
+     * The set of arguments for the Configurer.configureAwsProvider method.
+     */
+    export interface ConfigureAwsProviderArgs {
+        profile: pulumi.Input<string>;
+        region: pulumi.Input<string>;
+    }
+
     /**
      * The results of the Configurer.configureAwsProvider method.
      */

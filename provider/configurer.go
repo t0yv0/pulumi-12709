@@ -1,8 +1,6 @@
 package provider
 
 import (
-	"fmt"
-
 	"github.com/pulumi/pulumi-aws/sdk/v5/go/aws"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi/provider"
@@ -14,10 +12,7 @@ type Configurer struct {
 	AwsProvider aws.ProviderOutput `pulumi:"awsProvider"`
 }
 
-type ConfigurerArgs struct {
-	Region  pulumi.StringInput `pulumi:"region"`
-	Profile pulumi.StringInput `pulumi:"profile"`
-}
+type ConfigurerArgs struct{}
 
 func NewConfigurer(
 	ctx *pulumi.Context,
@@ -30,23 +25,7 @@ func NewConfigurer(
 		return nil, err
 	}
 
-	awsProvName := fmt.Sprintf("%s-aws-provider", name)
-
-	awsProvArgs := &aws.ProviderArgs{
-		Region:  args.Region,
-		Profile: args.Profile,
-	}
-
-	awsProv, err := aws.NewProvider(ctx, awsProvName, awsProvArgs)
-	if err != nil {
-		return nil, err
-	}
-
-	resource.AwsProvider = awsProv.ToProviderOutput()
-
-	if err := ctx.RegisterResourceOutputs(resource, pulumi.Map{
-		"awsProvider": resource.AwsProvider,
-	}); err != nil {
+	if err := ctx.RegisterResourceOutputs(resource, pulumi.Map{}); err != nil {
 		return nil, err
 	}
 
@@ -70,4 +49,35 @@ func ConstructConfigurer(
 	}
 
 	return provider.NewConstructResult(configurer)
+}
+
+type ConfigureAwsMethodArgs struct {
+	Region  pulumi.StringInput `pulumi:"region"`
+	Profile pulumi.StringInput `pulumi:"profile"`
+}
+
+type ConfigureAwsMethodResult struct {
+	AwsProvider *aws.Provider `pulumi:"awsProvider"`
+}
+
+func CallConfigureAwsMethod(ctx *pulumi.Context, inputs provider.CallArgs) (*provider.CallResult, error) {
+	args := &ConfigureAwsMethodArgs{}
+	self, err := inputs.CopyTo(args)
+	if err != nil {
+		return nil, err
+	}
+
+	awsProvArgs := &aws.ProviderArgs{
+		Region:  args.Region,
+		Profile: args.Profile,
+	}
+
+	awsProv, err := aws.NewProvider(ctx, "aws-p", awsProvArgs, pulumi.Parent(self))
+	if err != nil {
+		return nil, err
+	}
+
+	return provider.NewCallResult(&ConfigureAwsMethodResult{
+		AwsProvider: awsProv,
+	})
 }

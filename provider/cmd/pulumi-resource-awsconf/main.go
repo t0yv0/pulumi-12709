@@ -22,9 +22,19 @@ func main() {
 		Version:   version,
 		Schema:    providerSchema(),
 		Construct: constructFunc,
+		Call:      callFunc,
 	})
 	if err != nil {
 		cmdutil.ExitError(err.Error())
+	}
+}
+
+func callFunc(ctx *pulumi.Context, tok string, args provider.CallArgs) (*provider.CallResult, error) {
+	switch {
+	case tok == awsconf.ConfigurerConfigureAwsMethodToken:
+		return awsconf.CallConfigureAwsMethod(ctx, args)
+	default:
+		return nil, fmt.Errorf("Cannot Call a method on a remote component resource: unknown token %q", tok)
 	}
 }
 
