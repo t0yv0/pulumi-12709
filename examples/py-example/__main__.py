@@ -9,6 +9,7 @@ profile = config.require('profile')
 providers = pulumi_awsconf.Configurer("configurer",
     aws_region=region, aws_profile=profile)
 
+# TODO Curiously, if this is inlined, Pulumi complains with "duplicate URN." What could be the problem here?
 aws_provider = providers.aws_provider()
 
 bucket = pulumi_aws.s3.Bucket(
