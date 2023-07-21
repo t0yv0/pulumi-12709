@@ -13,15 +13,15 @@ func main() {
 		profile := conf.Require("profile")
 		region := conf.Require("region")
 
-		configurer, err := awsconf.NewConfigurer(ctx, "configurer", &awsconf.ConfigurerArgs{})
+		configurer, err := awsconf.NewConfigurer(ctx, "configurer", &awsconf.ConfigurerArgs{
+			AwsRegion:  pulumi.String(region),
+			AwsProfile: pulumi.String(profile),
+		})
 		if err != nil {
 			return err
 		}
 
-		awsProv, err := configurer.ConfigureAwsProvider(ctx, &awsconf.ConfigurerConfigureAwsProviderArgs{
-			Region:  pulumi.String(region),
-			Profile: pulumi.String(profile),
-		})
+		awsProv, err := configurer.AwsProvider(ctx)
 		if err != nil {
 			return err
 		}

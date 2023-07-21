@@ -26,13 +26,19 @@ func PackageSpec() schema.PackageSpec {
 			ConfigurerToken: {
 				IsComponent: true,
 				Methods: map[string]string{
-					"configureAwsProvider": ConfigurerConfigureAwsMethodToken,
+					"awsProvider": ConfigurerAwsProviderMethodToken,
 				},
+				InputProperties: map[string]schema.PropertySpec{
+					"awsRegion":  {TypeSpec: stringTS},
+					"awsProfile": {TypeSpec: stringTS},
+					"mode":       {TypeSpec: stringTS},
+				},
+				RequiredInputs: []string{"awsRegion", "awsProfile"},
 			},
 		},
 
 		Functions: map[string]schema.FunctionSpec{
-			ConfigurerConfigureAwsMethodToken: {
+			ConfigurerAwsProviderMethodToken: {
 				XReturnPlainResource: true,
 				Inputs: &schema.ObjectTypeSpec{
 					Properties: map[string]schema.PropertySpec{
@@ -41,11 +47,7 @@ func PackageSpec() schema.PackageSpec {
 								Ref: localResourceRef(ConfigurerToken),
 							},
 						},
-						"region":  {TypeSpec: stringTS},
-						"profile": {TypeSpec: stringTS},
-						"mode":    {TypeSpec: stringTS},
 					},
-					Required: []string{self, "region", "profile"},
 				},
 				ReturnType: &schema.ReturnTypeSpec{
 					ObjectTypeSpec: &schema.ObjectTypeSpec{

@@ -15,34 +15,35 @@
     "provider": {},
     "resources": {
         "awsconf:index:Configurer": {
+            "inputProperties": {
+                "awsProfile": {
+                    "type": "string"
+                },
+                "awsRegion": {
+                    "type": "string"
+                },
+                "mode": {
+                    "type": "string"
+                }
+            },
+            "requiredInputs": [
+                "awsRegion",
+                "awsProfile"
+            ],
             "isComponent": true,
             "methods": {
-                "configureAwsProvider": "awsconf:index:Configurer/awsMethod"
+                "awsProvider": "awsconf:index:Configurer/awsProvider"
             }
         }
     },
     "functions": {
-        "awsconf:index:Configurer/awsMethod": {
+        "awsconf:index:Configurer/awsProvider": {
             "inputs": {
                 "properties": {
                     "__self__": {
                         "$ref": "#/resources/awsconf:index:Configurer"
-                    },
-                    "mode": {
-                        "type": "string"
-                    },
-                    "profile": {
-                        "type": "string"
-                    },
-                    "region": {
-                        "type": "string"
                     }
-                },
-                "required": [
-                    "__self__",
-                    "region",
-                    "profile"
-                ]
+                }
             },
             "outputs": {
                 "properties": {

@@ -31,7 +31,7 @@ func main() {
 
 func callFunc(ctx *pulumi.Context, tok string, args provider.CallArgs) (*provider.CallResult, error) {
 	switch {
-	case tok == awsconf.ConfigurerConfigureAwsMethodToken:
+	case tok == awsconf.ConfigurerAwsProviderMethodToken:
 		return awsconf.CallConfigureAwsMethod(ctx, args)
 	default:
 		return nil, fmt.Errorf("Cannot Call a method on a remote component resource: unknown token %q", tok)

@@ -7,6 +7,7 @@ import (
 	"context"
 	"reflect"
 
+	"errors"
 	"github.com/pulumi/pulumi-aws/sdk/v5/go/aws"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 	"github.com/t0yv0/pulumi-12709/sdk/go/awsconf/internal"
@@ -20,9 +21,15 @@ type Configurer struct {
 func NewConfigurer(ctx *pulumi.Context,
 	name string, args *ConfigurerArgs, opts ...pulumi.ResourceOption) (*Configurer, error) {
 	if args == nil {
-		args = &ConfigurerArgs{}
+		return nil, errors.New("missing one or more required arguments")
 	}
 
+	if args.AwsProfile == nil {
+		return nil, errors.New("invalid value for required argument 'AwsProfile'")
+	}
+	if args.AwsRegion == nil {
+		return nil, errors.New("invalid value for required argument 'AwsRegion'")
+	}
 	opts = internal.PkgResourceDefaultOpts(opts)
 	var resource Configurer
 	err := ctx.RegisterRemoteComponentResource("awsconf:index:Configurer", name, args, &resource, opts...)
@@ -33,50 +40,39 @@ func NewConfigurer(ctx *pulumi.Context,
 }
 
 type configurerArgs struct {
+	AwsProfile string  `pulumi:"awsProfile"`
+	AwsRegion  string  `pulumi:"awsRegion"`
+	Mode       *string `pulumi:"mode"`
 }
 
 // The set of arguments for constructing a Configurer resource.
 type ConfigurerArgs struct {
+	AwsProfile pulumi.StringInput
+	AwsRegion  pulumi.StringInput
+	Mode       pulumi.StringPtrInput
 }
 
 func (ConfigurerArgs) ElementType() reflect.Type {
 	return reflect.TypeOf((*configurerArgs)(nil)).Elem()
 }
 
-func (r *Configurer) ConfigureAwsProvider(ctx *pulumi.Context, args *ConfigurerConfigureAwsProviderArgs) (o *aws.Provider, e error) {
-	ctx.XCallReturnPlainResource("awsconf:index:Configurer/awsMethod", args, ConfigurerConfigureAwsProviderResultOutput{}, r, reflect.ValueOf(&o), &e)
+func (r *Configurer) AwsProvider(ctx *pulumi.Context) (o *aws.Provider, e error) {
+	ctx.XCallReturnPlainResource("awsconf:index:Configurer/awsProvider", nil, ConfigurerAwsProviderResultOutput{}, r, reflect.ValueOf(&o), &e)
 	return
 }
 
-type configurerConfigureAwsProviderArgs struct {
-	Mode    *string `pulumi:"mode"`
-	Profile string  `pulumi:"profile"`
-	Region  string  `pulumi:"region"`
-}
-
-// The set of arguments for the ConfigureAwsProvider method of the Configurer resource.
-type ConfigurerConfigureAwsProviderArgs struct {
-	Mode    pulumi.StringPtrInput
-	Profile pulumi.StringInput
-	Region  pulumi.StringInput
-}
-
-func (ConfigurerConfigureAwsProviderArgs) ElementType() reflect.Type {
-	return reflect.TypeOf((*configurerConfigureAwsProviderArgs)(nil)).Elem()
-}
-
-type ConfigurerConfigureAwsProviderResult struct {
+type ConfigurerAwsProviderResult struct {
 	AwsProvider *aws.Provider `pulumi:"awsProvider"`
 }
 
-type ConfigurerConfigureAwsProviderResultOutput struct{ *pulumi.OutputState }
+type ConfigurerAwsProviderResultOutput struct{ *pulumi.OutputState }
 
-func (ConfigurerConfigureAwsProviderResultOutput) ElementType() reflect.Type {
-	return reflect.TypeOf((*ConfigurerConfigureAwsProviderResult)(nil)).Elem()
+func (ConfigurerAwsProviderResultOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*ConfigurerAwsProviderResult)(nil)).Elem()
 }
 
-func (o ConfigurerConfigureAwsProviderResultOutput) AwsProvider() aws.ProviderOutput {
-	return o.ApplyT(func(v ConfigurerConfigureAwsProviderResult) *aws.Provider { return v.AwsProvider }).(aws.ProviderOutput)
+func (o ConfigurerAwsProviderResultOutput) AwsProvider() aws.ProviderOutput {
+	return o.ApplyT(func(v ConfigurerAwsProviderResult) *aws.Provider { return v.AwsProvider }).(aws.ProviderOutput)
 }
 
 type ConfigurerInput interface {
@@ -207,7 +203,7 @@ func init() {
 	pulumi.RegisterInputType(reflect.TypeOf((*ConfigurerArrayInput)(nil)).Elem(), ConfigurerArray{})
 	pulumi.RegisterInputType(reflect.TypeOf((*ConfigurerMapInput)(nil)).Elem(), ConfigurerMap{})
 	pulumi.RegisterOutputType(ConfigurerOutput{})
-	pulumi.RegisterOutputType(ConfigurerConfigureAwsProviderResultOutput{})
+	pulumi.RegisterOutputType(ConfigurerAwsProviderResultOutput{})
 	pulumi.RegisterOutputType(ConfigurerArrayOutput{})
 	pulumi.RegisterOutputType(ConfigurerMapOutput{})
 }
