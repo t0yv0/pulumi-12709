@@ -15,6 +15,13 @@ preview.go::	bin/pulumi-resource-awsconf
 preview.ts::	bin/pulumi-resource-awsconf
 	(cd examples/ts-example && bash preview.sh)
 
+preview.py:: 	bin/pulumi-resource-awsconf ./examples/py-example/venv
+	(cd examples/py-example && bash preview.sh)
+
+./examples/py-example/venv:
+	(cd ./examples/py-example && python3 -m venv venv && ./venv/bin/python -m pip install pulumi_aws)
+	(cd ./examples/py-example && ./venv/bin/python -m pip install -e ../../sdk/python/bin)
+
 up.ts::	bin/pulumi-resource-awsconf
 	(cd examples/ts-example && bash up.sh)
 
@@ -50,6 +57,15 @@ build.ts::	gen.ts
 		mkdir -p bin && \
 		cp package.json yarn.lock ./bin/ && \
 		sed -i.bak -e "s/\$${VERSION}/$(VERSION)/g" ./bin/package.json
+
+build.py::	gen.py
+	cd sdk/python/ && \
+		printf "module fake_python_module // Exclude this directory from Go tools\n\ngo 1.17\n" > go.mod && \
+		python3 setup.py clean --all 2>/dev/null && \
+		rm -rf ./bin/ ../python.bin/ && cp -R . ../python.bin && mv ../python.bin ./bin && \
+		sed -i.bak -e 's/^VERSION = .*/VERSION = "$(PYPI_VERSION)"/g' -e 's/^PLUGIN_VERSION = .*/PLUGIN_VERSION = "$(VERSION)"/g' ./bin/setup.py && \
+		rm ./bin/setup.py.bak && rm ./bin/go.mod && \
+		cd ./bin && python3 setup.py build sdist
 
 install.ts::	build.ts
 	(cd ./sdk/nodejs/bin && yarn unlink || echo "unlink not needed")

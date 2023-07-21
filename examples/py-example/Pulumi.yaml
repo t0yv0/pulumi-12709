@@ -1,0 +1,5 @@
+name: pu-12709-py
+runtime:
+  name: python
+  options:
+    virtualenv: venv

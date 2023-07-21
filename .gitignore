@@ -5,3 +5,5 @@ log*.json
 yarn.lock
 node_modules
 stack.json
+venv
+__pycache__
