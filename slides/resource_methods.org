@@ -76,7 +76,7 @@ The meta-provider needs to simply implement methods for each provider that retur
 
 * The Win
 
-- 100s of lines of configuraiton move to 1 lang, 1 file
+- 100s of lines of configuration move to 1 lang, 1 file
 
 - Write once consume anywhere (Go, TypeScript, etc)
 
