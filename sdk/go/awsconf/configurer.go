@@ -43,12 +43,9 @@ func (ConfigurerArgs) ElementType() reflect.Type {
 	return reflect.TypeOf((*configurerArgs)(nil)).Elem()
 }
 
-func (r *Configurer) ConfigureAwsProvider(ctx *pulumi.Context, args *ConfigurerConfigureAwsProviderArgs) (ConfigurerConfigureAwsProviderResultOutput, error) {
-	out, err := ctx.Call("awsconf:index:Configurer/awsMethod", args, ConfigurerConfigureAwsProviderResultOutput{}, r)
-	if err != nil {
-		return ConfigurerConfigureAwsProviderResultOutput{}, err
-	}
-	return out.(ConfigurerConfigureAwsProviderResultOutput), nil
+func (r *Configurer) ConfigureAwsProvider(ctx *pulumi.Context, args *ConfigurerConfigureAwsProviderArgs) (o *aws.Provider, e error) {
+	ctx.XCallReturnPlainResource("awsconf:index:Configurer/awsMethod", args, ConfigurerConfigureAwsProviderResultOutput{}, r, reflect.ValueOf(&o), &e)
+	return
 }
 
 type configurerConfigureAwsProviderArgs struct {
@@ -70,7 +67,6 @@ func (ConfigurerConfigureAwsProviderArgs) ElementType() reflect.Type {
 
 type ConfigurerConfigureAwsProviderResult struct {
 	AwsProvider *aws.Provider `pulumi:"awsProvider"`
-	SomeString  *string       `pulumi:"someString"`
 }
 
 type ConfigurerConfigureAwsProviderResultOutput struct{ *pulumi.OutputState }
@@ -81,10 +77,6 @@ func (ConfigurerConfigureAwsProviderResultOutput) ElementType() reflect.Type {
 
 func (o ConfigurerConfigureAwsProviderResultOutput) AwsProvider() aws.ProviderOutput {
 	return o.ApplyT(func(v ConfigurerConfigureAwsProviderResult) *aws.Provider { return v.AwsProvider }).(aws.ProviderOutput)
-}
-
-func (o ConfigurerConfigureAwsProviderResultOutput) SomeString() pulumi.StringPtrOutput {
-	return o.ApplyT(func(v ConfigurerConfigureAwsProviderResult) *string { return v.SomeString }).(pulumi.StringPtrOutput)
 }
 
 type ConfigurerInput interface {

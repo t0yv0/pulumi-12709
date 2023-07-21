@@ -25,7 +25,8 @@ const bucket = new aws.s3.Bucket("my-bucket-12709-ts", {}, {
 export const awsProvider = {
     typ: typeof(providers.awsProvider),
     urn: providers.awsProvider.urn,
-    isOutput: pulumi.Output.isInstance(providers.awsProvider)
+    isOutput: pulumi.Output.isInstance(providers.awsProvider),
+    region: providers.awsProvider.region,
 };
 
 export const bucketID = bucket.id;

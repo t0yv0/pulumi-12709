@@ -1,8 +1,6 @@
 package provider
 
 import (
-	"fmt"
-
 	"github.com/pulumi/pulumi-aws/sdk/v5/go/aws"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi/provider"
@@ -60,8 +58,7 @@ type ConfigureAwsMethodArgs struct {
 }
 
 type ConfigureAwsMethodResult struct {
-	AwsProvider *aws.Provider       `pulumi:"awsProvider"`
-	SomeString  pulumi.StringOutput `pulumi:"someString"`
+	AwsProvider *aws.Provider `pulumi:"awsProvider"`
 }
 
 func CallConfigureAwsMethod(ctx *pulumi.Context, inputs provider.CallArgs) (*provider.CallResult, error) {
@@ -87,16 +84,16 @@ func CallConfigureAwsMethod(ctx *pulumi.Context, inputs provider.CallArgs) (*pro
 		AwsProvider: awsProv,
 	}
 
-	if ctx.DryRun() {
-		result.SomeString = awsProv.HttpProxy.ToStringPtrOutput().ApplyT(func(x *string) string {
-			if x != nil {
-				return fmt.Sprintf("OK: mode was %q", *x)
-			}
-			return "OK: mode was nil"
-		}).(pulumi.StringOutput)
-	} else {
-		result.SomeString = pulumi.String("OK").ToStringOutput()
-	}
+	// if ctx.DryRun() {
+	// 	result.SomeString = awsProv.HttpProxy.ToStringPtrOutput().ApplyT(func(x *string) string {
+	// 		if x != nil {
+	// 			return fmt.Sprintf("OK: mode was %q", *x)
+	// 		}
+	// 		return "OK: mode was nil"
+	// 	}).(pulumi.StringOutput)
+	// } else {
+	// 	result.SomeString = pulumi.String("OK").ToStringOutput()
+	// }
 
 	return provider.NewCallResult(result)
 }

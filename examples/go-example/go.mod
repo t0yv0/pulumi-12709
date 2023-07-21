@@ -8,7 +8,10 @@ require (
 	github.com/t0yv0/pulumi-12709/sdk v0.0.1
 )
 
-replace github.com/t0yv0/pulumi-12709/sdk => ../../sdk
+replace (
+	github.com/pulumi/pulumi/sdk/v3 => ../../../pulumi/sdk
+	github.com/t0yv0/pulumi-12709/sdk => ../../sdk
+)
 
 require (
 	github.com/Microsoft/go-winio v0.5.2 // indirect

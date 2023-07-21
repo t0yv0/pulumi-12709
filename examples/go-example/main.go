@@ -1,7 +1,6 @@
 package main
 
 import (
-	"github.com/pulumi/pulumi-aws/sdk/v5/go/aws"
 	"github.com/pulumi/pulumi-aws/sdk/v5/go/aws/s3"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi/config"
@@ -27,18 +26,13 @@ func main() {
 			return err
 		}
 
-		awsProv.ApplyT(func(p *aws.Provider) (int, error) {
+		// Create an AWS resource (S3 Bucket)
+		bucket, err := s3.NewBucket(ctx, "my-bucket-12709", nil, pulumi.Provider(awsProv))
+		if err != nil {
+			return err
+		}
 
-			// Create an AWS resource (S3 Bucket)
-			bucket, err := s3.NewBucket(ctx, "my-bucket-12709", nil, pulumi.Provider(p))
-			if err != nil {
-				return 0, err
-			}
-
-			ctx.Export("bucketID", bucket.ID())
-
-			return 0, nil
-		})
+		ctx.Export("bucketID", bucket.ID())
 
 		return nil
 	})

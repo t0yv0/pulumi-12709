@@ -3,8 +3,7 @@
     "language": {
         "go": {
             "generateResourceContainerTypes": true,
-            "importBasePath": "github.com/t0yv0/pulumi-12709/sdk/go/awsconf",
-            "liftSingleValueMethodReturns": true
+            "importBasePath": "github.com/t0yv0/pulumi-12709/sdk/go/awsconf"
         },
         "nodejs": {
             "dependencies": {
@@ -49,15 +48,13 @@
                 "properties": {
                     "awsProvider": {
                         "$ref": "/aws/v5.31.0/schema.json#/provider"
-                    },
-                    "someString": {
-                        "type": "string"
                     }
                 },
                 "required": [
                     "awsProvider"
                 ]
-            }
+            },
+            "returnPlainResource": true
         }
     }
 }

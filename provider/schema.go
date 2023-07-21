@@ -33,6 +33,7 @@ func PackageSpec() schema.PackageSpec {
 
 		Functions: map[string]schema.FunctionSpec{
 			ConfigurerConfigureAwsMethodToken: {
+				XReturnPlainResource: true,
 				Inputs: &schema.ObjectTypeSpec{
 					Properties: map[string]schema.PropertySpec{
 						self: {
@@ -52,9 +53,6 @@ func PackageSpec() schema.PackageSpec {
 							"awsProvider": {
 								TypeSpec: schema.TypeSpec{Ref: awsRef("#/provider")},
 							},
-							"someString": {
-								TypeSpec: stringTS,
-							},
 						},
 						Required: []string{"awsProvider"},
 					},
@@ -66,7 +64,6 @@ func PackageSpec() schema.PackageSpec {
 			"go": rawMessage(map[string]interface{}{
 				"generateResourceContainerTypes": true,
 				"importBasePath":                 "github.com/t0yv0/pulumi-12709/sdk/go/awsconf",
-				"liftSingleValueMethodReturns":   true,
 			}),
 			"nodejs": rawMessage(map[string]interface{}{
 				"dependencies": map[string]interface{}{
