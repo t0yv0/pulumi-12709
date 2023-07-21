@@ -18,6 +18,9 @@ preview.ts::	bin/pulumi-resource-awsconf
 preview.py:: 	bin/pulumi-resource-awsconf venv
 	(cd examples/py-example && bash preview.sh)
 
+up.py:: 	bin/pulumi-resource-awsconf venv
+	(cd examples/py-example && bash up.sh)
+
 venv::	./examples/py-example/venv/pyvenv.cfg
 ./examples/py-example/venv/pyvenv.cfg:	./sdk/python/bin/setup.py ./pulumi/sdk/python/env/src/setup.py
 	(cd ./examples/py-example && python3 -m venv venv && ./venv/bin/python -m pip install pulumi_aws)

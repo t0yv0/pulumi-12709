@@ -9,8 +9,11 @@ profile = config.require('profile')
 providers = pulumi_awsconf.Configurer("configurer",
     aws_region=region, aws_profile=profile)
 
+aws_provider = providers.aws_provider()
+
 bucket = pulumi_aws.s3.Bucket(
     'my-bucket-12709-py',
-    opts=pulumi.ResourceOptions(provider=providers.aws_provider()))
+    opts=pulumi.ResourceOptions(provider=aws_provider))
 
 pulumi.export("bucket_id", bucket.id)
+pulumi.export("region", aws_provider.region)
