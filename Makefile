@@ -15,12 +15,21 @@ preview.go::	bin/pulumi-resource-awsconf
 preview.ts::	bin/pulumi-resource-awsconf
 	(cd examples/ts-example && bash preview.sh)
 
-preview.py:: 	bin/pulumi-resource-awsconf ./examples/py-example/venv
+preview.py:: 	bin/pulumi-resource-awsconf venv
 	(cd examples/py-example && bash preview.sh)
 
-./examples/py-example/venv:
+venv::	./examples/py-example/venv/pyvenv.cfg
+./examples/py-example/venv/pyvenv.cfg:	./sdk/python/bin/setup.py ./pulumi/sdk/python/env/src/setup.py
 	(cd ./examples/py-example && python3 -m venv venv && ./venv/bin/python -m pip install pulumi_aws)
 	(cd ./examples/py-example && ./venv/bin/python -m pip install -e ../../sdk/python/bin)
+	(cd ./examples/py-example && ./venv/bin/python -m pip install -e ../../pulumi/sdk/python/env/src)
+
+./pulumi/sdk/python/env/src/setup.py:
+	(cd ./pulumi/sdk/python && make build)
+
+rebuild_python::
+	rm -rf ./pulumi/sdk/python/env/src
+	rm -rf ./examples/py-example/venv
 
 up.ts::	bin/pulumi-resource-awsconf
 	(cd examples/ts-example && bash up.sh)
@@ -58,7 +67,7 @@ build.ts::	gen.ts
 		cp package.json yarn.lock ./bin/ && \
 		sed -i.bak -e "s/\$${VERSION}/$(VERSION)/g" ./bin/package.json
 
-build.py::	gen.py
+./sdk/python/bin/setup.py:	./sdk/python/setup.py
 	cd sdk/python/ && \
 		printf "module fake_python_module // Exclude this directory from Go tools\n\ngo 1.17\n" > go.mod && \
 		python3 setup.py clean --all 2>/dev/null && \
