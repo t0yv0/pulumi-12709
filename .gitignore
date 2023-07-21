@@ -1,5 +1,6 @@
 bin
 *.dev.yaml
+*.tgif.yaml
 log*.json
 yarn.lock
 node_modules
