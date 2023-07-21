@@ -96,9 +96,9 @@
 <h1>Problem</h1>
 <p>One of our top customers has a pain point:</p>
 <ul>
-<li>several proviers to configure</li>
+<li>several providers to configure</li>
 <li>using explicit providers</li>
-<li>100s of lines of configuraiton code, duplicated</li>
+<li>100s of lines of config code, duplicated</li>
 <li>duplicaton across Go, Node, Python, YAML</li>
 </ul>
 </section>
@@ -143,8 +143,8 @@ XReturnPlainResource</p>
 <section id="typescript" class="title-slide slide level1">
 <h1>TypeScript</h1>
 <p>This is what our TypeScript users will get:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> providers <span class="op">=</span> <span class="bu">new</span> meta<span class="op">.</span>Configurer<span class="op">(</span><span class="st">&quot;providers&quot;</span><span class="op">,</span> <span class="op">{</span>awsRegion<span class="op">:</span> region<span class="op">});</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> bucket <span class="op">=</span> <span class="bu">new</span> aws<span class="op">.</span>s3<span class="op">.</span>Bucket<span class="op">(</span><span class="st">&quot;my-bucket&quot;</span><span class="op">,</span> <span class="op">{},</span> <span class="op">{</span></span>
+<div class="sourceCode" id="cb2"><pre class="sourceCode go"><code class="sourceCode go"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> providers <span class="op">=</span> <span class="bu">new</span> meta<span class="op">.</span>P<span class="op">(</span><span class="st">&quot;m&quot;</span><span class="op">,</span> <span class="op">{</span>awsRegion<span class="op">:</span> region<span class="op">});</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> bucket <span class="op">=</span> <span class="bu">new</span> aws<span class="op">.</span>s3<span class="op">.</span>Bucket<span class="op">(</span><span class="st">&quot;b&quot;</span><span class="op">,</span> <span class="op">{},</span> <span class="op">{</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  provider<span class="op">:</span> await providers<span class="op">.</span>awsProvider<span class="op">(),</span></span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="op">});</span></span></code></pre></div>
 </section>
@@ -172,8 +172,17 @@ that return a 1-arg struct:</p>
 <span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 </section>
 
-<section id="to-be-continued" class="title-slide slide level1">
-<h1>To be continued</h1>
+<section id="the-win" class="title-slide slide level1">
+<h1>The Win</h1>
+<ul>
+<li><p>100s of lines of configuraiton move to 1 lang, 1 file</p></li>
+<li><p>Write once consume anywhere (Go, TypeScript, etc)</p></li>
+<li><p>Updates done in one place, easier to manage</p></li>
+</ul>
+</section>
+
+<section id="tbc" class="title-slide slide level1">
+<h1>TBC</h1>
 <ul>
 <li><p>You can check the prototype at <a
 href="https://github.com/t0yv0/pulumi-12709">https://github.com/t0yv0/pulumi-12709</a></p></li>

@@ -2,9 +2,9 @@
 
 One of our top customers has a pain point:
 
-- several proviers to configure
+- several providers to configure
 - using explicit providers
-- 100s of lines of configuraiton code, duplicated
+- 100s of lines of config code, duplicated
 - duplicaton across Go, Node, Python, YAML
 
 * Idea
@@ -42,8 +42,8 @@ Functions: map[string]schema.FunctionSpec{
 This is what our TypeScript users will get:
 
 #+BEGIN_SRC go
-const providers = new meta.Configurer("providers", {awsRegion: region});
-const bucket = new aws.s3.Bucket("my-bucket", {}, {
+const providers = new meta.P("m", {awsRegion: region});
+const bucket = new aws.s3.Bucket("b", {}, {
   provider: await providers.awsProvider(),
 });
 #+END_SRC
@@ -74,7 +74,15 @@ The meta-provider needs to simply implement methods for each provider that retur
   }
 #+END_SRC
 
-* To be continued
+* The Win
+
+- 100s of lines of configuraiton move to 1 lang, 1 file
+
+- Write once consume anywhere (Go, TypeScript, etc)
+
+- Updates done in one place, easier to manage
+
+* TBC
 
 - You can check the prototype at https://github.com/t0yv0/pulumi-12709
 
