@@ -1,0 +1,13 @@
+sequenceDiagram
+      participant Program
+      participant MetaProvider
+      participant Provider1
+      participant Provider2
+
+      Program->>MetaProvider: meta.ConfigureProviders()
+      MetaProvider->>Provider1: new P1()
+      MetaProvider->>Provider2: new P2()
+      MetaProvider->>Program: providers
+
+      Program->>Provider1: new R1(.., {provider: providers.p1})
+      Program->>Provider2: new R1(.., {provider: providers.p2})

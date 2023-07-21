@@ -1,0 +1,84 @@
+* Problem
+
+One of our top customers has a pain point:
+
+- several proviers to configure
+- using explicit providers
+- 100s of lines of configuraiton code, duplicated
+- duplicaton across Go, Node, Python, YAML
+
+* Idea
+
+What about a provider factory?
+
+[[./diag1.png]]
+
+* Obstacle: Outputs
+
+- Not so fast, there is a pesky problem of pulumi/pulumi#7012
+
+- The metaprovider returns an Output and the user program cannot unwrap it easily to configure resources
+
+* Non-Solution
+
+- The general problem of Output<Provider> turns out to be pretty difficult
+
+- Luckily there is a simple way to special-case code generation for resource methods
+
+* Solution
+
+Extend Pulumi Package Schema with a new option for methods, XReturnPlainResource
+
+#+BEGIN_SRC go
+Functions: map[string]schema.FunctionSpec{
+  awsProviderMethodToken: {
+    XReturnPlainResource: true,
+  }
+}
+#+END_SRC
+
+* TypeScript
+
+This is what our TypeScript users will get:
+
+#+BEGIN_SRC go
+const providers = new meta.Configurer("providers", {awsRegion: region});
+const bucket = new aws.s3.Bucket("my-bucket", {}, {
+  provider: await providers.awsProvider(),
+});
+#+END_SRC
+
+* Go
+
+This is what our Go users will get:
+
+#+BEGIN_SRC go
+  providers, _:= meta.NewP(ctx, "m", &meta.MArgs{AwsRegion: region})
+  awsP, _ := providers.AwsProvider()
+  bucket, _ := s3.NewBucket(ctx, "b", nil, pulumi.Provider(awsP))
+#+END_SRC
+
+* Implementing
+
+The meta-provider needs to simply implement methods for each provider that return a 1-arg struct:
+
+#+BEGIN_SRC go
+  func CallAwsMethod(/* ... */) (*provider.CallResult, error) {
+          // ...
+          p, err := aws.NewProvider(ctx, "p", &aws.ProviderArgs{
+                  Region: /* ... */,
+          } pulumi.Parent(self))
+
+          result := &ConfigureAwsMethodResult{AwsProvider: p}
+          return provider.NewCallResult(result)
+  }
+#+END_SRC
+
+* To be continued
+
+- You can check the prototype at https://github.com/t0yv0/pulumi-12709
+
+- Thanks Levi, Justin and Fraser for early design feedback
+
+- The work continues to finalize the design and get it working for Python, YAML, and ultimately help our customer
+  simplify their codebase
