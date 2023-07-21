@@ -36,6 +36,11 @@ gen.ts::	gen.schema
 	mkdir -p ./sdk/nodejs
 	bin/pulumi-gen-awsconf typescript ./sdk/nodejs schema/schema.json 0.0.1
 
+gen.py::	gen.schema
+	rm -rf ./sdk/python
+	mkdir -p ./sdk/python
+	bin/pulumi-gen-awsconf python ./sdk/python schema/schema.json 0.0.1
+
 build.ts::	gen.ts
 	cd sdk/nodejs/ && \
 		printf "module fake_nodejs_module // Exclude this directory from Go tools\n\ngo 1.17\n" > go.mod && \
