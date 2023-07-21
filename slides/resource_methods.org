@@ -1,6 +1,6 @@
 * Problem
 
-One of our top customers has a pain point:
+Imagine if a Pulumi codebase had this pain point:
 
 - several providers to configure
 - using explicit providers
@@ -88,5 +88,4 @@ The meta-provider needs to simply implement methods for each provider that retur
 
 - Thanks Levi, Justin and Fraser for early design feedback
 
-- The work continues to finalize the design and get it working for Python, YAML, and ultimately help our customer
-  simplify their codebase
+- The work continues to finalize the design and get it working for Python and YAML
