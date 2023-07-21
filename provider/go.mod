@@ -10,8 +10,8 @@ require (
 )
 
 replace (
-	github.com/pulumi/pulumi/pkg/v3 => ../../pulumi/pkg
-	github.com/pulumi/pulumi/sdk/v3 => ../../pulumi/sdk
+	github.com/pulumi/pulumi/pkg/v3 => github.com/pulumi/pulumi/pkg/v3 v3.75.1-0.20230721014629-4b378eecaa38
+	github.com/pulumi/pulumi/sdk/v3 => github.com/pulumi/pulumi/sdk/v3 v3.75.1-0.20230721014629-4b378eecaa38
 )
 
 require (
