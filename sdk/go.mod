@@ -8,11 +8,6 @@ require (
 	github.com/pulumi/pulumi/sdk/v3 v3.75.0
 )
 
-replace (
-	github.com/pulumi/pulumi/pkg/v3 => github.com/pulumi/pulumi/pkg/v3 v3.75.1-0.20230721014629-4b378eecaa38
-	github.com/pulumi/pulumi/sdk/v3 => github.com/pulumi/pulumi/sdk/v3 v3.75.1-0.20230721014629-4b378eecaa38
-)
-
 require (
 	github.com/Microsoft/go-winio v0.5.2 // indirect
 	github.com/ProtonMail/go-crypto v0.0.0-20221026131551-cf6655e29de4 // indirect

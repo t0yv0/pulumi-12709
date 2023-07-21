@@ -8,11 +8,7 @@ require (
 	github.com/t0yv0/pulumi-12709/sdk v0.0.1
 )
 
-replace (
-	github.com/pulumi/pulumi/pkg/v3 => github.com/pulumi/pulumi/pkg/v3 v3.75.1-0.20230721014629-4b378eecaa38
-	github.com/pulumi/pulumi/sdk/v3 => github.com/pulumi/pulumi/sdk/v3 v3.75.1-0.20230721014629-4b378eecaa38
-	github.com/t0yv0/pulumi-12709/sdk => ../../sdk
-)
+replace github.com/t0yv0/pulumi-12709/sdk => ../../sdk
 
 require (
 	github.com/Microsoft/go-winio v0.5.2 // indirect
