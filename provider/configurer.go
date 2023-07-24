@@ -5,6 +5,7 @@ import (
 	"sync"
 
 	"github.com/pulumi/pulumi-aws/sdk/v5/go/aws"
+	res "github.com/pulumi/pulumi/sdk/v3/go/common/resource"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/util/contract"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi/internals"
@@ -14,13 +15,14 @@ import (
 type Configurer struct {
 	pulumi.ResourceState
 
-	AwsRegion  string
-	AwsProfile string
+	AwsProviderReference *res.ResourceReference
+
+	AwsProviderOutput aws.ProviderOutput `pulumi:"awsProviderOutput"`
 }
 
 type ConfigurerArgs struct {
-	AwsRegion  string                `pulumi:"awsRegion"`
-	AwsProfile string                `pulumi:"awsProfile"`
+	AwsRegion  pulumi.StringInput    `pulumi:"awsRegion"`
+	AwsProfile pulumi.StringInput    `pulumi:"awsProfile"`
 	Mode       pulumi.StringPtrInput `pulumi:"mode"`
 }
 
@@ -30,15 +32,27 @@ func NewConfigurer(
 	args *ConfigurerArgs,
 	opts ...pulumi.ResourceOption,
 ) (*Configurer, error) {
-	resource := &Configurer{
-		AwsRegion:  args.AwsRegion,
-		AwsProfile: args.AwsProfile,
-	}
+	resource := &Configurer{}
 	if err := ctx.RegisterComponentResource(ConfigurerToken, name, resource, opts...); err != nil {
 		return nil, err
 	}
 
-	if err := ctx.RegisterResourceOutputs(resource, pulumi.Map{}); err != nil {
+	awsProv, err := aws.NewProvider(ctx, "aws-p", &aws.ProviderArgs{
+		Region:  args.AwsRegion,
+		Profile: args.AwsProfile,
+	}, pulumi.Parent(resource))
+	if err != nil {
+		return nil, err
+	}
+
+	resource.AwsProviderOutput = awsProv.ToProviderOutput()
+
+	awsProvURN := forceURN(ctx.Context(), awsProv.URN())
+	resource.AwsProviderReference = &res.ResourceReference{URN: res.URN(awsProvURN)}
+
+	if err := ctx.RegisterResourceOutputs(resource, pulumi.Map{
+		"awsProviderOutput": resource.AwsProviderOutput,
+	}); err != nil {
 		return nil, err
 	}
 
@@ -69,7 +83,7 @@ func ConstructConfigurer(
 type ConfigureAwsMethodArgs struct{}
 
 type ConfigureAwsMethodResult struct {
-	AwsProvider *aws.Provider `pulumi:"awsProvider"`
+	AwsProvider *res.ResourceReference `pulumi:"awsProvider"`
 }
 
 func CallConfigureAwsMethod(ctx *pulumi.Context, inputs provider.CallArgs) (*provider.CallResult, error) {
@@ -81,17 +95,11 @@ func CallConfigureAwsMethod(ctx *pulumi.Context, inputs provider.CallArgs) (*pro
 
 	self := lookupConfigurer(ctx.Context(), res.URN())
 
-	awsProv, err := aws.NewProvider(ctx, "aws-p", &aws.ProviderArgs{
-		Region:  pulumi.String(self.AwsRegion),
-		Profile: pulumi.String(self.AwsProfile),
-	}, pulumi.Parent(self))
-	if err != nil {
-		return nil, err
+	result := &ConfigureAwsMethodResult{
+		AwsProvider: self.AwsProviderReference,
 	}
 
-	result := &ConfigureAwsMethodResult{
-		AwsProvider: awsProv,
-	}
+	// resource.ResourceReference
 
 	// The following code resolves to Unknown.
 	// if ctx.DryRun() {
