@@ -14,3 +14,6 @@ Usage is demonstrated in examples:
 There are also some [slides](./slides/resource_methods.org) on the wider problem.
 
 The implementaion of the method can be found in [configurer.go](./provider/configurer.go).
+
+Unfortunately YAML usage is blocked by https://github.com/pulumi/pulumi-yaml/issues/354 but will be doable once YAML
+runtime supports method calls.
