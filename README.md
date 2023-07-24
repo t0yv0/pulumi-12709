@@ -1,17 +1,14 @@
 # pulumi-12709
 
-Build an MLC in Go. Build methods
+Prototyping for https://github.com/pulumi/pulumi/issues/12709
 
-Input:
+The approach demonstrated here introduces a codegen option XReturnPlainResource for methods. A resource provider can
+then use this option to build a method that returns an explicitly configured Provider Resource.
 
-aws region
-aws profile
+Usage is demonstrated in examples:
 
-Output:
+- [TypeScript example](./examples/ts-example/index.ts)
+- [Go example](./examples/go-example/main.go)
+- [Python example](./examples/py-example/__main__.py)
 
-aws.Provider resource with the provided inputs set
-custom.Provider resource with the provided inputs set
-
-Use this MLC in a stack and access a configured provider.
-
-A cited example of a Component Package is EKS.
+There are also some [slides](./slides/resource_methods.org) on the wider problem.
