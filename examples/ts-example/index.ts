@@ -12,23 +12,22 @@ let profile = config.require("profile");
 //
 // Looks like this is not a problem if any aws.s3.Bucket is referenced, before or after the provider configurer.
 
-let providers = await new awsconf.Configurer("configurer", {}).configureAwsProviderAsync({
-    profile: profile,
-    region: region,
-    mode: "normal",
+const providers = new awsconf.Configurer("configurer", {
+    awsProfile: profile,
+    awsRegion: region,
 });
+
+const awsProvider = await providers.awsProvider();
 
 const bucket = new aws.s3.Bucket("my-bucket-12709-ts", {}, {
-    provider: providers.awsProvider,
+    provider: awsProvider,
 });
 
-export const awsProvider = {
-    typ: typeof(providers.awsProvider),
-    urn: providers.awsProvider.urn,
-    isOutput: pulumi.Output.isInstance(providers.awsProvider),
-    region: providers.awsProvider.region,
+export const awsProviderExports = {
+    typ: typeof(awsProvider),
+    urn: awsProvider.urn,
+    isOutput: pulumi.Output.isInstance(awsProvider),
+    region: awsProvider.region,
 };
 
 export const bucketID = bucket.id;
-export const someString = providers.someString;
-export const someStringType = typeof(providers.someString);

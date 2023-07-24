@@ -6,8 +6,6 @@ import * as utilities from "./utilities";
 
 import * as pulumiAws from "@pulumi/aws";
 
-import {Configurer} from "./index";
-
 export class Configurer extends pulumi.ComponentResource {
     /** @internal */
     public static readonly __pulumiType = 'awsconf:index:Configurer';
@@ -50,16 +48,10 @@ export class Configurer extends pulumi.ComponentResource {
         super(Configurer.__pulumiType, name, resourceInputs, opts, true /*remote*/);
     }
 
-    awsProviderAsync(): Promise<Configurer.AwsProviderResult> {
+    awsProvider(): Promise<pulumiAws.Provider> {
         return pulumi.runtime.callAsync("awsconf:index:Configurer/awsProvider", {
             "__self__": this,
-        }, this);
-    }
-
-    awsProvider(): pulumi.Output<Configurer.AwsProviderResult> {
-        return pulumi.runtime.call("awsconf:index:Configurer/awsProvider", {
-            "__self__": this,
-        }, this);
+        }, this, {plainResourceField: "awsProvider"});
     }
 }
 
