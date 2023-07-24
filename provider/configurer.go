@@ -2,6 +2,7 @@ package provider
 
 import (
 	"context"
+	"os"
 	"sync"
 
 	"github.com/pulumi/pulumi-aws/sdk/v5/go/aws"
@@ -69,10 +70,22 @@ func ConstructConfigurer(
 type ConfigureAwsMethodArgs struct{}
 
 type ConfigureAwsMethodResult struct {
-	AwsProvider *aws.Provider `pulumi:"awsProvider"`
+	AwsProvider aws.ProviderOutput `pulumi:"awsProvider"`
 }
 
 func CallConfigureAwsMethod(ctx *pulumi.Context, inputs provider.CallArgs) (*provider.CallResult, error) {
+	// The SDKs really do not support receving unknowns plain-resource returning methods, but if desired one can set
+	// an UNKNOWNS=true env var to see what happens if the provider was to actually send one, to test the error
+	// handling.
+	if ctx.DryRun() && os.Getenv("UNKNOWNS") == "true" {
+		result := &ConfigureAwsMethodResult{
+			AwsProvider: pulumi.UnsafeUnknownOutput(nil).ApplyT(func(x any) *aws.Provider {
+				panic("This should not be called")
+			}).(aws.ProviderOutput),
+		}
+		return provider.NewCallResult(result)
+	}
+
 	args := &ConfigureAwsMethodArgs{}
 	res, err := inputs.CopyTo(args)
 	if err != nil {
@@ -90,21 +103,8 @@ func CallConfigureAwsMethod(ctx *pulumi.Context, inputs provider.CallArgs) (*pro
 	}
 
 	result := &ConfigureAwsMethodResult{
-		AwsProvider: awsProv,
+		AwsProvider: awsProv.ToProviderOutput(),
 	}
-
-	// The following code resolves to Unknown.
-	// if ctx.DryRun() {
-	// 	result.SomeString = awsProv.HttpProxy.ToStringPtrOutput().ApplyT(func(x *string) string {
-	// 		if x != nil {
-	// 			return fmt.Sprintf("OK: mode was %q", *x)
-	// 		}
-	// 		return "OK: mode was nil"
-	// 	}).(pulumi.StringOutput)
-	// } else {
-	// 	result.SomeString = pulumi.String("OK").ToStringOutput()
-	// }
-
 	return provider.NewCallResult(result)
 }
 
