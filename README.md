@@ -12,3 +12,5 @@ Usage is demonstrated in examples:
 - [Python example](./examples/py-example/__main__.py)
 
 There are also some [slides](./slides/resource_methods.org) on the wider problem.
+
+The implementaion of the method can be found in [configurer.go](./provider/configurer.go).
