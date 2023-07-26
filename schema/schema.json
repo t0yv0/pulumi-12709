@@ -46,16 +46,9 @@
                 }
             },
             "outputs": {
-                "properties": {
-                    "awsProvider": {
-                        "$ref": "/aws/v5.31.0/schema.json#/provider"
-                    }
-                },
-                "required": [
-                    "awsProvider"
-                ]
-            },
-            "returnPlainResource": true
+                "$ref": "/aws/v5.31.0/schema.json#/provider",
+                "plain": true
+            }
         }
     }
 }

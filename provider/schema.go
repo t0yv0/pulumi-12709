@@ -39,7 +39,6 @@ func PackageSpec() schema.PackageSpec {
 
 		Functions: map[string]schema.FunctionSpec{
 			ConfigurerAwsProviderMethodToken: {
-				XReturnPlainResource: true,
 				Inputs: &schema.ObjectTypeSpec{
 					Properties: map[string]schema.PropertySpec{
 						self: {
@@ -50,13 +49,9 @@ func PackageSpec() schema.PackageSpec {
 					},
 				},
 				ReturnType: &schema.ReturnTypeSpec{
-					ObjectTypeSpec: &schema.ObjectTypeSpec{
-						Properties: map[string]schema.PropertySpec{
-							"awsProvider": {
-								TypeSpec: schema.TypeSpec{Ref: awsRef("#/provider")},
-							},
-						},
-						Required: []string{"awsProvider"},
+					TypeSpec: &schema.TypeSpec{
+						Ref:   awsRef("#/provider"),
+						Plain: true,
 					},
 				},
 			},

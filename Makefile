@@ -34,6 +34,9 @@ rebuild_python::
 	rm -rf ./pulumi/sdk/python/env/src
 	rm -rf ./examples/py-example/venv
 
+rebuild_node::
+	rm -rf ./pulumi/sdk/nodejs/bin
+
 up.ts::	bin/pulumi-resource-awsconf
 	(cd examples/ts-example && bash up.sh)
 
@@ -60,7 +63,7 @@ gen.py::	gen.schema
 	mkdir -p ./sdk/python
 	bin/pulumi-gen-awsconf python ./sdk/python schema/schema.json 0.0.1
 
-build.ts::	gen.ts
+build.ts::	./pulumi/sdk/nodejs/bin/utils.js gen.ts
 	cd sdk/nodejs/ && \
 		printf "module fake_nodejs_module // Exclude this directory from Go tools\n\ngo 1.17\n" > go.mod && \
 		yarn install && \
@@ -69,6 +72,11 @@ build.ts::	gen.ts
 		mkdir -p bin && \
 		cp package.json yarn.lock ./bin/ && \
 		sed -i.bak -e "s/\$${VERSION}/$(VERSION)/g" ./bin/package.json
+
+./pulumi/sdk/nodejs/bin/utils.js:
+	(cd ./pulumi/sdk/nodejs && make build_package)
+	(cd ./pulumi/sdk/nodejs/bin && yarn unlink || echo unlinkNotNeeded)
+	(cd ./pulumi/sdk/nodejs/bin && yarn link)
 
 ./sdk/python/bin/setup.py:	./sdk/python/setup.py
 	cd sdk/python/ && \

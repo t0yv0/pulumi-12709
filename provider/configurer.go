@@ -70,7 +70,7 @@ func ConstructConfigurer(
 type ConfigureAwsMethodArgs struct{}
 
 type ConfigureAwsMethodResult struct {
-	AwsProvider aws.ProviderOutput `pulumi:"awsProvider"`
+	AwsProvider aws.ProviderOutput `pulumi:"resource"`
 }
 
 func CallConfigureAwsMethod(ctx *pulumi.Context, inputs provider.CallArgs) (*provider.CallResult, error) {
